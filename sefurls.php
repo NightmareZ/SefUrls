@@ -7,7 +7,8 @@
  
 	function generateSefUrl($russianString)
 	{
-		$russianString = preg_replace('/[^A-zА-я]+/', '-', $russianString);
+		$encoding = 'UTF-8';
+		$russianString = mb_strtolower($russianString, $encoding);
 
 		$chars = array(
 			'а' => 'a', 'б' => 'b', 'в' => 'v', 'г' => 'g', 'д' => 'd', 'е' => 'e', 'ё' => 'yo', 'ж' => 'zh',
@@ -18,12 +19,19 @@
 		);
 
 		$result = '';
-		$len = strlen($russianString);
+		$len = mb_strlen($russianString, $encoding);
 
 		for ($i = 0; $i < $len; ++$i) {
-			$ch = $russianString[$i];
+			$ch = mb_substr($russianString, $i, 1, $encoding);
 
-			if (key_exists($ch, $chars)) {
+			if (!($ch >= 'A' && $ch <= 'z' ||
+				  $ch >= 'А' && $ch <= 'я' ||
+				  $ch >= '0' && $ch <= '9'))
+			{
+				$ch = '-';
+			}
+
+			if (array_key_exists($ch, $chars)) {
 				$result .= $chars[$ch];
 			} else {
 				$result .= $ch;
