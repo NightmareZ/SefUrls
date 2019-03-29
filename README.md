@@ -1,2 +1,2 @@
 # SefUrls
-PHP SEF URLs Generator function
+PHP SEF (Search Engine Friendly) URLs Generator function
